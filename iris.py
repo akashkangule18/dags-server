@@ -27,22 +27,23 @@ train_data.drop(columns=['species'],inplace = True)
 test_data.drop(columns=['species'],inplace = True)
 
 # model building
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 X_train = train_data
 X_test = test_data
 
-mlflow.set_experiment('iris-random-forest')
+mlflow.set_experiment('iris-decision-tree')
 with mlflow.start_run():
 
-    rf = RandomForestClassifier(n_estimators = 100,
+    dt = DecisionTreeClassifier(n_estimators = 100,
                                 max_depth = 3,
-                                criterion='entropy'
+                                max_features=0.8,
+                                min_impurity_decrease=0.01
                             )
 
-    rf.fit(X_train,y_train)
+    dt.fit(X_train,y_train)
 
     # model evalution
-    y_pred = rf.predict(X_test)
+    y_pred = dt.predict(X_test)
 
     from sklearn.metrics import accuracy_score,precision_score, recall_score
 
@@ -52,8 +53,6 @@ with mlflow.start_run():
     mlflow.log_param('n_estimator',100)
     mlflow.log_param('max_depth',3)
 
-    mlflow.log_artifact(__file__)
-    mlflow.sklearn.log_model(rf,'RandomForestClassifier')
 
 
 
