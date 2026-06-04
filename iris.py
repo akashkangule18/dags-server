@@ -34,9 +34,9 @@ X_test = test_data
 mlflow.set_experiment('iris-random-forest')
 with mlflow.start_run():
 
-    rf = RandomForestClassifier(n_estimators = 50,
-                            min_samples_split = 2,
-                                max_depth = 3
+    rf = RandomForestClassifier(n_estimators = 100,
+                                max_depth = 3,
+                                criterion='entropy'
                             )
 
     rf.fit(X_train,y_train)
@@ -49,13 +49,12 @@ with mlflow.start_run():
     accuracy = accuracy_score(y_test,y_pred)
 
     mlflow.log_metric('accuracy',accuracy)
-    mlflow.log_param('n_estimator',50)
-    mlflow.log_param('min_sample_split',2)
+    mlflow.log_param('n_estimator',100)
     mlflow.log_param('max_depth',3)
 
-    
+    mlflow.log_artifact(__file__)
+    mlflow.sklearn.log_model(rf,'RandomForestClassifier')
 
-    
 
 
     print('accuracy : ', accuracy)
