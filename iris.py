@@ -34,9 +34,9 @@ X_test = test_data
 mlflow.set_experiment('iris-decision-tree')
 with mlflow.start_run():
 
-    dt = DecisionTreeClassifier( max_depth = 3,
-                                max_features=0.8,
-                                min_impurity_decrease=0.01
+    dt = DecisionTreeClassifier( max_depth = 1,
+                                max_features=0.2,
+                                min_impurity_decrease=0.1
                             )
 
     dt.fit(X_train,y_train)
@@ -47,13 +47,29 @@ with mlflow.start_run():
     from sklearn.metrics import accuracy_score,precision_score, recall_score
 
     accuracy = accuracy_score(y_test,y_pred)
+    precision = precision_score(y_test,y_pred,average='weighted')
+    recall = recall_score(y_test,y_pred,average='macro')
 
+
+    # metrics
     mlflow.log_metric('accuracy',accuracy)
-    mlflow.log_param('max_features',0.8)
-    mlflow.log_param('max_depth',3)
-    mlflow.log_param('min_impurity_decrease',0.01)
+    mlflow.log_metric('precision',precision)
+    mlflow.log_metric('recall',recall)
+
+    # params
+    mlflow.log_param('max_features',0.2)
+    mlflow.log_param('max_depth',1)
+    mlflow.log_param('min_impurity_decrease',0.1)
+
+    # artifacts
+    mlflow.log_artifact(__file__)
+
+    # model
+    mlflow.sklearn.log_model(dt, 'DecisionTreeClassifier')
 
 
 
 
     print('accuracy : ', accuracy)
+    print('precision :', precision)
+    print('recall: ',recall)
