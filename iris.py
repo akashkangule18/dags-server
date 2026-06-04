@@ -3,6 +3,8 @@ import numpy as np
 import seaborn as sns
 import mlflow
 import mlflow.sklearn
+import dagshub
+dagshub.init(repo_owner='akashkangule18', repo_name='dags-server', mlflow=True)
 
 
 
@@ -29,7 +31,7 @@ from sklearn.ensemble import RandomForestClassifier
 X_train = train_data
 X_test = test_data
 
-mlflow.set_experiment('iris')
+mlflow.set_experiment('iris-random-forest')
 with mlflow.start_run():
 
     rf = RandomForestClassifier(n_estimators = 50,
@@ -50,6 +52,8 @@ with mlflow.start_run():
     mlflow.log_param('n_estimator',50)
     mlflow.log_param('min_sample_split',2)
     mlflow.log_param('max_depth',3)
+
+    
 
     
 
