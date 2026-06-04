@@ -34,8 +34,7 @@ X_test = test_data
 mlflow.set_experiment('iris-decision-tree')
 with mlflow.start_run():
 
-    dt = DecisionTreeClassifier(n_estimators = 100,
-                                max_depth = 3,
+    dt = DecisionTreeClassifier( max_depth = 3,
                                 max_features=0.8,
                                 min_impurity_decrease=0.01
                             )
@@ -50,8 +49,9 @@ with mlflow.start_run():
     accuracy = accuracy_score(y_test,y_pred)
 
     mlflow.log_metric('accuracy',accuracy)
-    mlflow.log_param('n_estimator',100)
+    mlflow.log_param('max_features',0.8)
     mlflow.log_param('max_depth',3)
+    mlflow.log_param('min_impurity_decrease',0.01)
 
 
 
